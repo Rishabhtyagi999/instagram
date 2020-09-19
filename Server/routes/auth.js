@@ -46,7 +46,7 @@ router.post('/signup', (request, response) => {
         })
 })
 
-router.post('/signin', (req, res) => {
+router.post('/login', (req, res) => {
     const { email, password } = req.body
 
     if (!email || !password) {
@@ -63,8 +63,9 @@ router.post('/signin', (req, res) => {
                 .then(doMatch => {
                     if (doMatch) {
                         const token = jwt.sign({ _id: savadUser._id }, JWT_SECRET)
-                        res.json({ token: token })
-                            // res.json({ message: "Successfully Signed in" })
+                        const{_id,name,email}=savadUser
+                        res.json({ token,user:{_id,name,email}})
+                            
 
                     } else {
                         return res.status(422).json({ error: "Invalid Email or Password" })
